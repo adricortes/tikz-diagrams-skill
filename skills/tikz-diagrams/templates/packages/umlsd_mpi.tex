@@ -1,0 +1,10 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{pgf-umlsd}
+\begin{document}
+\begin{sequencediagram}
+\newinst{r0}{Rank 0}
+\newinst[2]{r1}{Rank 1}
+\mess{r0}{send halo}{r1}
+\mess{r1}{send halo}{r0}
+\end{sequencediagram}
+\end{document}

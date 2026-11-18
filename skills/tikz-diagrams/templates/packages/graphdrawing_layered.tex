@@ -1,0 +1,14 @@
+% Compile with lualatex. The graphdrawing library does not work with xelatex or pdflatex.
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{graphs, graphdrawing}
+\usegdlibrary{layered}
+\begin{document}
+\begin{tikzpicture}
+\graph[layered layout, nodes={draw, rounded corners}, sibling distance=12mm, level distance=12mm]{
+  load -> {mesh, params};
+  mesh -> partition -> {assemble, solve};
+  params -> assemble -> solve -> output;
+};
+\end{tikzpicture}
+\end{document}

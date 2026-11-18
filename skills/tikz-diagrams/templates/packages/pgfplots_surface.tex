@@ -1,0 +1,15 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+    width=7cm, view={-35}{35},
+    xlabel={$x$}, ylabel={$y$}, zlabel={$u$},
+    colormap/viridis,
+]
+\addplot3[surf, shader=interp, domain=0:1, y domain=0:1, samples=25]
+    {sin(deg(pi*x))*sin(deg(pi*y))};
+\end{axis}
+\end{tikzpicture}
+\end{document}

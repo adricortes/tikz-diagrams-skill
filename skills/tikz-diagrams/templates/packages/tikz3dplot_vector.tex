@@ -1,0 +1,14 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz,tikz-3dplot}
+\begin{document}
+\tdplotsetmaincoords{70}{110}
+\begin{tikzpicture}[tdplot_main_coords, scale=2.5, >=latex]
+\draw[thick,->] (0,0,0) -- (1.2,0,0) node[anchor=north east]{$x$};
+\draw[thick,->] (0,0,0) -- (0,1.2,0) node[anchor=north west]{$y$};
+\draw[thick,->] (0,0,0) -- (0,0,1.2) node[anchor=south]{$z$};
+\tdplotsetcoord{P}{1}{50}{60}
+\draw[-stealth, very thick, blue] (0,0,0) -- (P) node[above right]{$\mathbf{r}$};
+\draw[dashed] (0,0,0) -- (Pxy) -- (P);
+\tdplotdrawarc{(0,0,0)}{0.35}{0}{60}{anchor=north}{$\phi$}
+\end{tikzpicture}
+\end{document}

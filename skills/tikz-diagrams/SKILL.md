@@ -19,6 +19,7 @@ For visual and domain guidance, read only what is needed:
 - For design critique, researcher-style revisions, noisy/composite figures, figure batteries, or multi-round visual review, read `references/critique_and_iteration.md`.
 - If a figure contains equations, curves, equilibria, estimands, thresholds, game payoffs, geometry-dependent arrows, or model-implied comparative statics, read `references/math_logic_checks.md`.
 - For neural network and deep learning diagrams, read `references/neural_network_patterns.md`. It maps each request to a template in `templates/nntikz/`.
+- Before you draw by hand, read `references/domain_packages.md`. It lists domain packages such as `pgfplots`, `tikz-cd`, `forest`, and `circuitikz`, with a template for each in `templates/packages/`.
 
 ## Tool Contract
 
@@ -55,7 +56,7 @@ If a dependency is missing, ask before downloading or installing it. State the p
 1. Identify the target medium: paper, Beamer slide, handout, template library, or exploratory sketch.
 2. Choose presentation mode: `teaching`, `research`, or `compact`.
 3. Identify the communication job: show mechanism, workflow, assumptions, feedback, comparison, diagnostic, risk, tradeoff, or evidence summary.
-4. Select a diagram family from `references/diagram_patterns.md` or a domain template from `references/business_economics_patterns.md`.
+4. Look for a domain package in `references/domain_packages.md`. If no package matches, select a diagram family from `references/diagram_patterns.md` or a domain template from `references/business_economics_patterns.md`.
 5. For algebraic, curve, equilibrium, statistical, game-theoretic, or geometry-dependent figures, run the math/diagram logic planning gate before drawing: identify variables, equations or constraints, expected signs, ordering, intersections, invariants, and whether the result is exact or schematic.
 6. For animations, first answer these questions. What changes over time? Why is animation better than a static figure? Is the motion discrete or continuous? Do smooth transitions materially increase render time? How long do viewers need to absorb each frame change? Then read `references/animation_workflow.md`.
 7. Start from `templates/standalone.tex` unless a Beamer slide-fit wrapper is required.

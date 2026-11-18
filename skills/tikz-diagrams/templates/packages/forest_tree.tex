@@ -1,0 +1,11 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{forest}
+\begin{document}
+\begin{forest}
+for tree={draw, rounded corners, edge={-latex}, l sep=8mm, s sep=4mm}
+[{$x_1 < 0.5$}
+  [{$x_2 < 0.3$} [A] [B]]
+  [C]
+]
+\end{forest}
+\end{document}
