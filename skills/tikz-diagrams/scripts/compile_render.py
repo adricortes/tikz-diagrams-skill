@@ -68,6 +68,12 @@ def main(argv: list[str]) -> int:
     parser.add_argument("tex", help="Path to .tex file")
     parser.add_argument("--engine", default="xelatex", help="LaTeX engine, default xelatex")
     parser.add_argument("--dpi", type=int, default=180, help="PNG render DPI")
+    parser.add_argument(
+        "--max-runs",
+        type=int,
+        default=3,
+        help="Maximum LaTeX runs; reruns stop when the .aux file is stable (needed for remember picture)",
+    )
     parser.add_argument("--visual-check", action="store_true", help="Run rendered visual QA after PNG creation")
     parser.add_argument("--visual-mode", choices=["teaching", "research", "compact"], default="teaching")
     parser.add_argument("--visual-report", help="Optional JSON report path; defaults to <stem>-visual-qa.json when visual checking")
@@ -89,7 +95,18 @@ def main(argv: list[str]) -> int:
 
     cwd = tex.parent
     stem = tex.stem
-    run([args.engine, "-interaction=nonstopmode", "-halt-on-error", tex.name], cwd)
+    # `remember picture`, `overlay`, and \ref read positions from the .aux file
+    # of the previous run. Rerun until the .aux file is stable.
+    aux = cwd / f"{stem}.aux"
+    previous = aux.read_bytes() if aux.exists() else None
+    for run_number in range(1, args.max_runs + 1):
+        run([args.engine, "-interaction=nonstopmode", "-halt-on-error", tex.name], cwd)
+        current = aux.read_bytes() if aux.exists() else None
+        if current == previous:
+            break
+        previous = current
+    else:
+        print(f"WARN: .aux file still changed after {args.max_runs} runs; positions may be stale.", file=sys.stderr)
 
     pdf = cwd / f"{stem}.pdf"
     if not pdf.exists():
