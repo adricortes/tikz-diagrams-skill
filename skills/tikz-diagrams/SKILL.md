@@ -18,6 +18,7 @@ For visual and domain guidance, read only what is needed:
 - For a fresh-session handoff, a regression prompt, or an iterative figure-series test, read `references/clean_room_handoff_tests.md`.
 - For design critique, researcher-style revisions, noisy/composite figures, figure batteries, or multi-round visual review, read `references/critique_and_iteration.md`.
 - If a figure contains equations, curves, equilibria, estimands, thresholds, game payoffs, geometry-dependent arrows, or model-implied comparative statics, read `references/math_logic_checks.md`.
+- For neural network and deep learning diagrams, read `references/neural_network_patterns.md`. It maps each request to a template in `templates/nntikz/`.
 
 ## Tool Contract
 
@@ -117,6 +118,7 @@ Select by communicative purpose rather than by visual appearance:
 - **threshold/phase transition**: nonlinear regime changes, crisis cliffs, tipping points.
 - **threshold/corridor trajectory**: paths through feasible regions, survival corridors, safety bands, control limits, or exit thresholds.
 - **ensemble/aggregation**: model voting, committees, forecasts, decision support.
+- **neural network architecture**: perceptrons, multilayer networks, RNN/LSTM/GRU cells, encoder-decoders, attention, transformers, and backpropagation graphs. Start from `templates/nntikz/`.
 
 ## Quality Bar
 
