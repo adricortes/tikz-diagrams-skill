@@ -79,6 +79,15 @@ Method 1 reads positions from the `.aux` file of the previous LaTeX run. After o
 
 `mesif.tex` draws each state as a circle and each transition as a curved arrow with a label. The arrows use `bend left` with different angles, from 30 to 65 degrees, so that parallel transitions do not overlap. Self-loops use `loop above` and `loop right`.
 
-## Gaps
+## Own HPC templates
 
-These figures do not cover domain decomposition with ghost (halo) cells, the memory hierarchy as a pyramid, roofline plots, or strong and weak scaling plots. For a roofline or scaling plot, use the `pgfplots` templates in `references/domain_packages.md`. For the other topics, draw by hand from the recipes above.
+The templates in `templates/hpc/` were written for this skill. They use the MIT license of the repository, so they need no credit line. Each one keeps its parameters in macros at the top of the file. All four compile with `xelatex`.
+
+- Roofline model: `roofline.tex`. Set the peak performance `\Ppeak` and the memory bandwidth `\BW`. The roof is `min(\Ppeak, \BW*x)`, and the ridge point is at `\Ppeak/\BW`. Replace the three example kernels with measured points. A measured point must be on or below the roof.
+- Strong and weak scaling: `scaling.tex`. Two panels: speedup with the ideal line and Amdahl's law for the serial fraction `\fserial`, and weak-scaling efficiency with the ideal line. Replace the example data with your timings. In strong scaling, a measured point above the Amdahl curve means that the real serial fraction is smaller than `\fserial`. In that case, lower `\fserial`.
+- Memory hierarchy: `memory_hierarchy.tex`. Six levels, from registers to SSD storage, with size and latency beside each level. The values are typical orders of magnitude for a current server CPU. Replace them with the values of your machine.
+- Domain decomposition with a halo: `domain_decomposition_halo.tex`. A 2 x 2 decomposition, with the halo of rank 0 and two exchange arrows. Set the cells per subdomain with `\n` and the halo width with `\h`. A 5-point stencil needs only the two halo strips. A 9-point stencil also needs the darker corner cell.
+
+The visual QA reports false positives on three of these files. The rotated y-label of the roofline spans the full height of the plot, and the checker takes it as a title. The two panel titles of the scaling plot are at the same height. The rotated "memory bound" label has a larger text box than the visible text. In the PNGs, no text collides.
+
+A roofline or scaling figure is `exact` for the values you give it, because `pgfplots` computes the curves from the formulas. The example values are not measurements, so a figure with the example values is `schematic`.

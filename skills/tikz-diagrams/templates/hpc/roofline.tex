@@ -1,0 +1,37 @@
+% Roofline model. Attainable performance = min(peak, bandwidth x arithmetic intensity).
+% Replace the machine parameters and the kernel points with your own measurements.
+% The example values are illustrative, not from a real machine.
+\documentclass[border=5pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+% Machine parameters
+\pgfmathsetmacro{\Ppeak}{1000}  % peak performance, GFLOP/s
+\pgfmathsetmacro{\BW}{100}      % memory bandwidth, GB/s
+\pgfmathsetmacro{\Iridge}{\Ppeak/\BW} % ridge point, FLOP/byte
+\begin{document}
+\begin{tikzpicture}
+\begin{loglogaxis}[
+    width=8cm, height=6cm,
+    xmin=0.05, xmax=200, ymin=2, ymax=3000,
+    xlabel={Arithmetic intensity (FLOP/byte)},
+    ylabel={Performance (GFLOP/s)},
+    ylabel style={yshift=4pt},
+    grid=major, grid style={gray!25},
+    log basis x=10, log basis y=10,
+]
+% Roof: memory-bound slope, then compute-bound ceiling
+\addplot[very thick, domain=0.05:200, samples=400] {min(\Ppeak, \BW*x)};
+% Ridge point
+\addplot[dashed, gray] coordinates {(\Iridge,2) (\Iridge,\Ppeak)};
+\node[anchor=south west, font=\footnotesize, gray!70!black] at (axis cs:\Iridge,3) {ridge};
+% Region labels
+\node[anchor=south east, font=\footnotesize, rotate=34] at (axis cs:2,230) {memory bound};
+\node[anchor=south, font=\footnotesize] at (axis cs:30,1.1*\Ppeak) {compute bound};
+% Kernels: (intensity, measured GFLOP/s)
+\addplot[only marks, mark=*, mark size=2.2pt, blue!70!black] coordinates {(0.25,18) (0.5,40) (30,640)};
+\node[anchor=west, font=\footnotesize, blue!70!black] at (axis cs:0.25,18) {SpMV};
+\node[anchor=west, font=\footnotesize, blue!70!black] at (axis cs:0.5,40) {stencil};
+\node[anchor=north, font=\footnotesize, blue!70!black] at (axis cs:30,600) {DGEMM};
+\end{loglogaxis}
+\end{tikzpicture}
+\end{document}
