@@ -1,6 +1,6 @@
 ---
 name: tikz-diagrams
-description: "Use this skill when an AI agent needs to create, edit, render, verify, improve, batch-generate, or stockpile TikZ/PGF diagrams or animations for LaTeX papers, Beamer slides, teaching material, research workflows, business/economics diagrams, or technical documentation. Triggers include TikZ, PGF, animate.sty, LaTeX animations, frame previews, GIF previews, LaTeX diagrams, Beamer figures, causal DAGs, flowcharts, curves, matrices, quadrant maps, decision trees, contact sheets, visual overlap checks, and diagram template libraries."
+description: "Use this skill to create, edit, render, check, improve, batch-generate, or stockpile TikZ/PGF diagrams and animations. Targets: LaTeX papers, Beamer slides, teaching material, research workflows, business/economics diagrams, and technical documentation. Trigger terms: TikZ, PGF, animate.sty, LaTeX animations, frame previews, GIF previews, LaTeX diagrams, Beamer figures, causal DAGs, flowcharts. More trigger terms: curves, matrices, quadrant maps, decision trees, contact sheets, visual overlap checks, diagram template libraries."
 ---
 
 # TikZ Diagrams Skill
@@ -10,39 +10,39 @@ Create correct, polished, reusable TikZ diagram artifacts. Treat a diagram as an
 For visual and domain guidance, read only what is needed:
 
 - `references/style_guidelines.md` for spacing, typography, color, slide fit, and visual QA rules.
-- `references/diagram_patterns.md` when selecting a diagram family or mapping a user request to a template.
+- To select a diagram family or to map a user request to a template, read `references/diagram_patterns.md`.
 - `references/business_economics_patterns.md` for economics, finance, econometrics, marketing, management, research, and teaching templates.
-- `references/example_corpus.md` when the user asks for examples, stock templates, regression tests, or evidence of what has worked well.
-- `references/animation_workflow.md` when creating TikZ/PGF animations, `animate.sty` PDFs, frame previews, GIF/MP4 previews, or animation stress tests.
-- `references/tikz_gotchas.md` when a compile, layout, label, or rendering problem appears.
-- `references/clean_room_handoff_tests.md` when preparing a fresh-session handoff, regression prompt, or iterative figure-series test.
-- `references/critique_and_iteration.md` when doing design critique, researcher-style revisions, noisy/composite figures, figure batteries, or multi-round visual review.
-- `references/math_logic_checks.md` when a figure contains equations, curves, equilibria, estimands, thresholds, game payoffs, geometry-dependent arrows, or model-implied comparative statics.
+- If the user asks for examples, stock templates, regression tests, or evidence of what worked well, read `references/example_corpus.md`.
+- For TikZ/PGF animations, `animate.sty` PDFs, frame previews, GIF/MP4 previews, or animation stress tests, read `references/animation_workflow.md`.
+- If a compile, layout, label, or rendering problem appears, read `references/tikz_gotchas.md`.
+- For a fresh-session handoff, a regression prompt, or an iterative figure-series test, read `references/clean_room_handoff_tests.md`.
+- For design critique, researcher-style revisions, noisy/composite figures, figure batteries, or multi-round visual review, read `references/critique_and_iteration.md`.
+- If a figure contains equations, curves, equilibria, estimands, thresholds, game payoffs, geometry-dependent arrows, or model-implied comparative statics, read `references/math_logic_checks.md`.
 
 ## Tool Contract
 
 - Prefer standalone `.tex` files for individual diagrams.
-- Use `xelatex` by default. Use `pdflatex` or `lualatex` only when the project requires it.
+- Use `xelatex` by default. If the project requires `pdflatex` or `lualatex`, use that engine.
 - Use `scripts/check_tikz_safety.py` before compiling new or edited diagrams.
-- Use `scripts/compile_render.py` to compile `.tex` to `.pdf`, render `.png`, and, when the diagram is not purely exploratory, run rendered visual QA with `--visual-check`.
-- Use `scripts/check_tikz_visual.py` when inspecting an already-rendered PDF for title-band collisions, text overlap, clipped labels, and crowded annotations.
-- Use `scripts/make_contact_sheet.py` for batches or iterations. Add `--show-qa` when visual QA reports exist.
+- Use `scripts/compile_render.py` to compile `.tex` to `.pdf` and to render `.png`. If the diagram is not purely exploratory, also run rendered visual QA with `--visual-check`.
+- To inspect an already-rendered PDF for title-band collisions, text overlap, clipped labels, and crowded annotations, use `scripts/check_tikz_visual.py`.
+- Use `scripts/make_contact_sheet.py` for batches or iterations. If visual QA reports exist, add `--show-qa`.
 - Use `scripts/render_tikz_series.py` for controlled sequences of variants that update from a previous figure, such as teaching-to-research-to-compact versions.
-- For animations, make both the interactive PDF and an inspectable frame preview when possible; PDF animation playback depends on the viewer.
+- For animations, try to make both the interactive PDF and an inspectable frame preview. PDF animation playback depends on the viewer.
 - Save task outputs under a user/workspace output folder, not inside the skill directory.
-- Final artifacts should normally include `.tex`, `.pdf`, and `.png`. For batches, include contact sheets and a short QA log when useful.
-- During critique or iterative visual review, save versioned PNGs and contact sheets instead of overwriting inspected images; stale viewer caches can otherwise show the wrong render.
+- Final artifacts normally include `.tex`, `.pdf`, and `.png`. For batches, also include contact sheets. A short QA log is optional.
+- During critique or iterative visual review, save versioned PNGs and contact sheets. Do not overwrite inspected images, because stale viewer caches can then show the wrong render.
 - When showing an updated image in chat, prefer the freshly rendered versioned local file. Do not rely on a GitHub README image, browser tab, or overwritten canonical filename as proof that the user is seeing the latest render.
 
-Resolve bundled scripts, templates, and references relative to the directory containing this `SKILL.md`. If the host agent exposes a skill-directory variable such as `${CLAUDE_SKILL_DIR}`, use it; otherwise set `SKILL_DIR=/path/to/tikz-diagrams` in examples or commands.
+Resolve bundled scripts, templates, and references relative to the directory containing this `SKILL.md`. If the host agent exposes a skill-directory variable such as `${CLAUDE_SKILL_DIR}`, use it. Otherwise, set `SKILL_DIR=/path/to/tikz-diagrams` in examples or commands.
 
 ## Dependencies
 
 Before running render workflows, check that the local environment has:
 
 - Python 3.10+.
-- Python packages: `Pillow` for contact sheets and PNG validation; `PyMuPDF` (`fitz`) for rendered visual QA.
-- A TeX distribution with `xelatex`; use `pdflatex` or `lualatex` only when the project requires it.
+- Python packages: `Pillow` for contact sheets and PNG validation, and `PyMuPDF` (`fitz`) for rendered visual QA.
+- A TeX distribution with `xelatex`. A project that requires `pdflatex` or `lualatex` also needs that engine.
 - Poppler command-line tools, especially `pdftoppm`, for PDF-to-PNG rendering.
 - `ffmpeg` for GIF/MP4 animation previews.
 - ImageMagick `magick` for contact sheets generated by the animation preview helper.
@@ -56,12 +56,12 @@ If a dependency is missing, ask before downloading or installing it. State the p
 3. Identify the communication job: show mechanism, workflow, assumptions, feedback, comparison, diagnostic, risk, tradeoff, or evidence summary.
 4. Select a diagram family from `references/diagram_patterns.md` or a domain template from `references/business_economics_patterns.md`.
 5. For algebraic, curve, equilibrium, statistical, game-theoretic, or geometry-dependent figures, run the math/diagram logic planning gate before drawing: identify variables, equations or constraints, expected signs, ordering, intersections, invariants, and whether the result is exact or schematic.
-6. For animations, first decide what changes over time, why animation is better than a static figure, whether the motion should be discrete or continuous, whether smooth transitions will materially increase render time, and how long viewers need to absorb each frame change; then read `references/animation_workflow.md`.
+6. For animations, first answer these questions. What changes over time? Why is animation better than a static figure? Is the motion discrete or continuous? Do smooth transitions materially increase render time? How long do viewers need to absorb each frame change? Then read `references/animation_workflow.md`.
 7. Start from `templates/standalone.tex` unless a Beamer slide-fit wrapper is required.
 8. Write short labels first. Put longer explanation in external caption text, speaker notes, surrounding slide text, or a QA log rather than inside the rendered image.
 9. Run static checks.
 10. Compile, render, and run rendered visual QA.
-11. For direct labels, effect labels, estimate labels, callouts, or math notation inside a plotted region, run the targeted text-over-plot gate with `--text-plot-overlap` or inspect equivalent PDF text boxes against rendered plot pixels.
+11. For direct labels, effect labels, estimate labels, callouts, or math notation inside a plotted region, run the targeted text-over-plot gate. Use `--text-plot-overlap`, or compare the PDF text boxes with the rendered plot pixels.
 12. Inspect the PNG for overlap, clipping, blank output, cramped text, poor slide fit, confusing arrow flow, and model-logic problems that visual QA cannot detect.
 13. Run a design critique gate: decide `keep`, `simplify`, `split`, or `reject` based on visual complexity, figure grammar, label economy, and whether the diagram says one clear thing.
 14. Patch the source or generator. Rerun checks and render after substantial layout changes.
@@ -81,7 +81,7 @@ Use modes to decide how much explanation belongs inside the diagram:
 
 - **teaching**: lecture or student-facing slide. Explainer boxes and teaching notes are allowed, but they need generous spacing and must not enter the title band, legend area, or key plot comparison.
 - **research**: seminar, conference, working paper, or journal-style figure. Prefer direct labels, legends, axis labels, and concise annotations. Avoid large explainer boxes inside the plot area unless the user explicitly asks for them.
-- **compact**: multi-panel figures, appendix grids, or constrained slide layouts. Use direct labels only; omit explainer boxes and long notes.
+- **compact**: multi-panel figures, appendix grids, or constrained slide layouts. Use direct labels only. Omit explainer boxes and long notes.
 
 When the user has not specified a mode, infer from context. Use `teaching` for lecture materials and `research` for papers, seminars, and professional research presentations.
 
@@ -93,12 +93,12 @@ For researcher-driven iteration, keep controls explicit instead of burying them 
 
 - Name important coordinates and nodes (`cutoff`, `effect_bracket`, `treated_label`, `legend_anchor`) so specific elements can be moved without redrawing the whole figure.
 - Separate semantic styles (`explainer`, `directlabel`, `researchlabel`, `teachingnote`) from geometry.
-- Offer paired variants when useful: a `teaching` version with explainer boxes and a `research` version with direct labels and external captions.
+- If useful, offer paired variants: a `teaching` version with explainer boxes and a `research` version with direct labels and external captions.
 - Preserve the same data geometry across variants unless the user asks for a conceptual redesign.
 - Use visual QA reports to target edits: fix `title_band_collision`, `text_overlap`, `near_edge`, and `text_crowding` issues one at a time.
 - For fine-grained label collisions that ordinary visual QA can miss, especially effect labels on plots, use `--text-plot-overlap`. This maps PDF text boxes onto the rendered image and checks whether targeted labels cover plotted strokes.
 - For batches or repeated variants, create a contact sheet with `--show-qa` and only inspect the failed or warning panels in detail.
-- For critique rounds, distinguish a repair from a simplification or redesign. If the user says a figure is noisy, too complex, or should be redone, default to structural simplification or splitting, not a tiny coordinate tweak.
+- For critique rounds, distinguish a repair from a simplification or redesign. If the user says a figure is noisy, too complex, or needs a redo, default to structural simplification or splitting, not a tiny coordinate tweak.
 
 ## Template Selection
 
@@ -123,26 +123,26 @@ Select by communicative purpose rather than by visual appearance:
 - No overlapping words.
 - No clipped labels, arrowheads, legends, or notes.
 - No unpositioned inline edge labels in dense diagrams.
-- Short node labels are preferred; keep long prose out of the diagram.
-- Keep caption prose out of the rendered image by default; record suggested caption text in a QA note or response.
+- Prefer short node labels. Keep long prose out of the diagram.
+- Keep caption prose out of the rendered image by default. Record suggested caption text in a QA note or in the response.
 - Arrows must express real semantics: causal, temporal, logical, transformation, diagnostic, or feedback.
 - Visual plausibility is not enough for math, economics, statistics, or geometry diagrams. Curves, intersections, brackets, shaded areas, arrows, labels, and animation states must match the expected algebra, comparative statics, estimand definition, payoff logic, or model constraints.
-- If exact equations, data, or parameter values are unavailable, mark the figure as `schematic` in the QA note and avoid visual claims that look numerically exact.
-- Use stable node dimensions (`text width`, `minimum width`, `minimum height`, `align=center`) when labels can vary.
+- If exact equations, data, or parameter values are unavailable, mark the figure as `schematic` in the QA note. Then avoid visual claims that look numerically exact.
+- If labels can vary, use stable node dimensions (`text width`, `minimum width`, `minimum height`, `align=center`).
 - Use a small semantic palette. Do not add decoration that does not clarify the concept.
 - Do not add labels or annotations that merely repeat what a node, branch, arrow, or title already says.
-- A single figure should usually use one primary grammar. Split DAG-plus-estimates, mechanism-plus-coefficients, or model-plus-diagnostics prompts into paired figures unless the shared layout clearly reduces complexity.
-- One diagram should usually have one main teaching job.
-- For delayed-adjustment paths, keep the time axis, intervention marker, baseline, and final direction easy to compare. Use short phase labels; put causal mechanisms, estimates, and caveats outside the rendered image or in a paired figure.
+- Usually, use one primary grammar in a single figure. Split DAG-plus-estimates, mechanism-plus-coefficients, or model-plus-diagnostics prompts into paired figures unless the shared layout clearly reduces complexity.
+- Usually, give one diagram one main teaching job.
+- For delayed-adjustment paths, keep the time axis, intervention marker, baseline, and final direction easy to compare. Use short phase labels. Put causal mechanisms, estimates, and caveats outside the rendered image or in a paired figure.
 - Treat semantic correctness as part of visual QA: labels, highlights, arrows, and annotations must remain true in the frames, variants, or panels where they appear.
 - Treat direct-label placement as part of visual QA: an effect, estimate, coefficient, or callout label must not sit on top of a curve, bracket, axis, shaded region boundary, or key comparison. If in doubt, rerender with `--text-plot-overlap` and move the label to whitespace or add a clear backing box.
-- For animations, every moving element must carry meaning. Do not animate for decoration; animate accumulation, transition, parameter sweep, threshold crossing, trajectory, sorting, recursion, or convergence.
-- For animations, choose motion form deliberately: categorical additions usually need discrete build frames; accumulation, traversal, phase movement, and parameter sweeps usually need smooth intermediate frames.
-- For animations, ask before rendering smooth transitions when smoothness materially increases render time or artifact size and the user has not already requested smooth motion. Offer a fast stepped preview versus a slower smooth render.
-- Tip: every page of a frame deck must have the same size. The bundled templates keep a fixed frame. A hand-made deck can change size when elements move. Then `ffmpeg` fails with "Changing video frame properties on the fly is not supported". To fix the frame, put `\useasboundingbox (x1,y1) rectangle (x2,y2);` first in each `tikzpicture`.
+- For animations, every moving element must carry meaning. Do not animate for decoration. Animate accumulation, transition, parameter sweep, threshold crossing, trajectory, sorting, recursion, or convergence.
+- For animations, choose the motion form deliberately. Categorical additions usually need discrete build frames. Accumulation, traversal, phase movement, and parameter sweeps usually need smooth intermediate frames.
+- For animations, smooth transitions can materially increase render time or artifact size. If they do, and the user did not already request smooth motion, ask before you render them. Offer a fast stepped preview versus a slower smooth render.
+- Tip: every page of a frame deck must have the same size. The bundled templates keep a fixed frame. In a hand-made deck, moving elements can change the page size. Then `ffmpeg` fails with "Changing video frame properties on the fly is not supported". To fix the frame, put `\useasboundingbox (x1,y1) rectangle (x2,y2);` first in each `tikzpicture`.
 - For smooth animations that hit TeX memory limits, consider splitting the frame deck and stitching GIF/MP4 segments before simplifying away important motion.
 - For threshold/corridor animations, keep regions, thresholds, legends, and axis scales stable. Reveal the path smoothly, then reveal exit/failure markers only after the crossing condition is true.
-- For animations, timing is part of quality. Dense frames, new figure grammars, payoffs, legends, final takeaways, and threshold crossings need longer holds than simple highlights; the GIF/frame preview should use the intended pacing, not only one page per semantic state.
+- For animations, timing is part of quality. Dense frames, new figure grammars, payoffs, legends, final takeaways, and threshold crossings need longer holds than simple highlights. The GIF/frame preview must use the intended pacing, not only one page per semantic state.
 - For batches, diagrams must pass static checks, compile, render, and survive contact-sheet review.
 
 ## Verification Commands
@@ -179,7 +179,7 @@ Visual QA on an existing PDF:
 python3 "$SKILL_DIR/scripts/check_tikz_visual.py" path/to/diagram.pdf --mode teaching --report path/to/diagram-visual-qa.json
 ```
 
-Target the fine-grained gate at custom label text when needed:
+If needed, target the fine-grained gate at custom label text:
 
 ```bash
 python3 "$SKILL_DIR/scripts/check_tikz_visual.py" path/to/diagram.pdf --mode research --text-plot-overlap --plot-label-regex 'tau|DiD|effect|estimate'
@@ -219,11 +219,11 @@ On first compile, render, safety, or visual-QA failure:
 4. Rerun the exact failed check.
 5. Continue from the current source instead of rewriting the whole figure.
 
-Do not loop indefinitely on similar failures. If the same class of failure persists after two focused repairs, reassess whether the figure should be simplified, split, or redesigned.
+Do not loop indefinitely on similar failures. If the same class of failure persists after two focused repairs, decide again: simplify, split, or redesign the figure.
 
 ## Iteration Policy
 
-For ordinary single diagrams, do one focused visual repair pass after first render. Continue only if there is a severe defect: overlap, clipping, unreadable text, blank render, wrong semantics, or clear slide-fit failure.
+For ordinary single diagrams, do one focused visual repair pass after first render. Continue only for a severe defect: overlap, clipping, unreadable text, blank render, wrong semantics, or clear slide-fit failure.
 
 When the user explicitly asks for iterative improvement, do the loop literally:
 
@@ -237,7 +237,7 @@ Do not pre-generate "iterations" without inspecting the previous result.
 
 During critique iterations, use versioned outputs such as `figure_v01.png`, `figure_v02.png`, and `contact_sheet_v02.png`. Only copy the accepted version to the final canonical filename after inspection.
 
-When reporting back to the user, show or link the exact freshly rendered versioned local image that was inspected. If a canonical filename was overwritten, mention the versioned source as well; browser, chat, and GitHub image caches can otherwise display an older image.
+When reporting back to the user, show or link the exact freshly rendered versioned local image that was inspected. If a canonical filename was overwritten, mention the versioned source as well, because browser, chat, and GitHub image caches can display an older image.
 
 ## Completion Criteria
 
@@ -248,19 +248,19 @@ Complete only when:
 - PDF compiles.
 - PNG renders and is nonblank.
 - Rendered visual QA passes, or any warning is documented and manually inspected.
-- Fine-grained text-over-plot QA has passed or been manually inspected when labels are placed inside plotted regions.
+- If labels are inside plotted regions, fine-grained text-over-plot QA passes, or you inspected those labels manually.
 - Visual inspection finds no severe overlap, clipping, or slide-fit issue.
 - The design critique gate has a documented outcome: `keep`, `simplify`, `split`, or `reject`.
-- For math, curve, model, estimand, threshold, game-theoretic, or geometry-dependent figures, a math/diagram logic review is documented as `exact`, `schematic`, `needs_source`, or `failed`.
-- For animations, the intended frame sequence has been inspected through a frame deck, GIF/MP4 preview, or equivalent contact sheet, not only through the first rendered PNG.
-- For batches, contact sheet exists and has been inspected.
+- For math, curve, model, estimand, threshold, game-theoretic, or geometry-dependent figures, a math/diagram logic review exists. Its documented result is `exact`, `schematic`, `needs_source`, or `failed`.
+- For animations, you inspected the intended frame sequence through a frame deck, GIF/MP4 preview, or equivalent contact sheet. The first rendered PNG alone is not sufficient.
+- For batches, a contact sheet exists, and you inspected it.
 
 In the final response, summarize the user-visible result and link the final output folder or final artifact files. Mention tests run and any limitation that remains.
 
 ## Reference Corpus
 
-Use a local curated example corpus when one is available. For business/economics deployments, a good corpus should include generated examples, category contact sheets, static checks, compile logs, render outputs, and a QA log.
+If a local curated example corpus is available, use it. For business/economics deployments, a good corpus includes generated examples, category contact sheets, static checks, compile logs, render outputs, and a QA log.
 
-If the user provides an example corpus path, store it only in task-local notes or environment variables such as `TIKZ_DIAGRAMS_EXAMPLE_CORPUS`; do not hard-code personal or institution-specific paths into reusable skill files.
+If the user provides an example corpus path, store it only in task-local notes or in environment variables such as `TIKZ_DIAGRAMS_EXAMPLE_CORPUS`. Do not hard-code personal or institution-specific paths into reusable skill files.
 
-Do not use quick smoke-test diagrams as visual exemplars. Smoke tests may prove the scripts run, but the example corpus above is the quality endpoint for template style and coverage.
+Do not use quick smoke-test diagrams as visual exemplars. Smoke tests can prove that the scripts run. But the example corpus above is the quality endpoint for template style and coverage.
