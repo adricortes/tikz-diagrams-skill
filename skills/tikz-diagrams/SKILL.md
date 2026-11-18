@@ -19,6 +19,7 @@ For visual and domain guidance, read only what is needed:
 - For design critique, researcher-style revisions, noisy/composite figures, figure batteries, or multi-round visual review, read `references/critique_and_iteration.md`.
 - If a figure contains equations, curves, equilibria, estimands, thresholds, game payoffs, geometry-dependent arrows, or model-implied comparative statics, read `references/math_logic_checks.md`.
 - For neural network and deep learning diagrams, read `references/neural_network_patterns.md`. It maps each request to a template in `templates/nntikz/`.
+- For graph neural networks, graph algorithms, CNNs, generative models, reinforcement learning, and HMMs, read `references/graph_ml_patterns.md`. It maps each request to a template in `templates/petarv/`, with a status label for each one.
 - Before you draw by hand, read `references/domain_packages.md`. It lists domain packages such as `pgfplots`, `tikz-cd`, `forest`, and `circuitikz`, with a template for each in `templates/packages/`.
 
 ## Tool Contract
